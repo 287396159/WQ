@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/vector_gou"
+    tools:targetApi="lollipop">
+
+    <target
+        android:name="border"
+        android:animation="@animator/anim_ok"/>
+
+    <target
+        android:name="gou"
+        android:animation="@animator/anim_ok"/>
+
+</animated-vector>

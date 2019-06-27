@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/vector_error"
+    tools:targetApi="lollipop">
+
+    <target
+        android:name="circle"
+        android:animation="@animator/anim_error"/>
+
+    <target
+        android:name="error"
+        android:animation="@animator/anim_error"/>
+
+</animated-vector>

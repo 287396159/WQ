@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        app:contentInsetLeft="0dp"
+        android:background="@color/colorPrimary"
+        app:title="UWB_ALERTER"
+        app:titleTextColor="#ffffff"/>
+
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:textColor="#000"
+            android:text="COM："
+            android:textStyle="bold"
+            android:textSize="14sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"/>
+
+        <FrameLayout
+            android:layout_width="150dp"
+            android:layout_height="35sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="8dp"
+            android:layout_gravity="center_vertical">
+
+            <Spinner
+                android:id="@+id/spCom"
+                android:layout_width="150dp"
+                android:layout_height="35sp"
+                android:background="@drawable/button_normal">
+
+            </Spinner>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@mipmap/ic_drop_down"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginRight="8dp"/>
+
+        </FrameLayout>
+
+
+
+    </LinearLayout>-->
+
+    <LinearLayout
+        android:id="@+id/linearMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="请将USB插入手机，设备将自动连接"
+            android:gravity="center_vertical"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:paddingLeft="8dp"
+            android:layout_marginTop="8dp"/>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvConnectStatus"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:text="当前状态：未连接"
+                android:gravity="center_vertical"
+                android:textColor="#F00"
+                android:paddingLeft="8dp"/>
+
+            <!--<View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"/>-->
+
+            <!--<TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="当前状态：已连接"
+                android:gravity="center_vertical"
+                android:textColor="#F00"/>-->
+
+
+            <Button
+                android:id="@+id/btnRefresh"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:text="connect"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"
+                android:layout_marginRight="15dp"
+                android:visibility="gone"/>
+
+
+            <Button
+                android:id="@+id/btnConnect"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:text="connect"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"
+                android:layout_marginRight="15dp"/>
+
+
+            <Button
+                android:id="@+id/btnSreach"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:text="sreach"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"
+                android:layout_marginRight="8dp"
+                android:enabled="false"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnDisable"
+            android:layout_width="175dp"
+            android:layout_height="35dp"
+            android:text="Disable Tag PowerOff"
+            android:textSize="10sp"
+            android:background="@drawable/button_bg"
+            android:gravity="center"
+            android:layout_marginRight="8dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="8dp"
+            android:enabled="false"
+            android:visibility="gone"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:text="Id"
+                android:background="#BED4D3"/>
+
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#000"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:text="Type"/>
+
+
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#000"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:text="Firmware Version"
+                android:background="#BED4D3"/>
+
+
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#000"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:text="HVersion"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"/>
+
+
+        <ListView
+            android:id="@+id/lvDevice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+
+    </LinearLayout>
+
+
+</LinearLayout>

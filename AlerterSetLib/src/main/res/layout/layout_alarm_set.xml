@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:text="Led Alarm En："
+            android:gravity="center_vertical|right"
+            android:textColor="#000"
+            android:layout_marginRight="8dp"
+            android:textSize="10sp"/>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40sp"
+            android:layout_gravity="center_vertical">
+
+            <Spinner
+                android:id="@+id/spLedAlarmEn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/button_normal"
+                android:textSize="10sp">
+
+            </Spinner>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@mipmap/ic_drop_down"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/btnSetLedAlarmEn"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="set"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/button_bg"
+            android:textSize="10sp"/>
+
+        <Button
+            android:id="@+id/btnReadLedAlarmEn"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="read"
+            android:background="@drawable/button_bg"
+            android:layout_marginLeft="8dp"
+            android:textSize="10sp"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"
+        android:layout_marginTop="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:text="Sound Alarm En："
+            android:gravity="center_vertical|right"
+            android:textColor="#000"
+            android:layout_marginRight="8dp"
+            android:textSize="10sp"/>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40sp"
+            android:layout_gravity="center_vertical">
+
+            <Spinner
+                android:id="@+id/spSoundAlarmEn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/button_normal"
+                android:textSize="10sp">
+
+            </Spinner>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@mipmap/ic_drop_down"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/btnSetSoundAlarmEn"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="set"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/button_bg"
+            android:textSize="10sp"/>
+
+        <Button
+            android:id="@+id/btnReadSoundAlarmEn"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="read"
+            android:background="@drawable/button_bg"
+            android:layout_marginLeft="8dp"
+            android:textSize="10sp"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"
+        android:layout_marginTop="8dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/tvSoundVolumeHint"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:text="Sound Volume："
+            android:gravity="center_vertical|right"
+            android:textColor="#000"
+            android:layout_marginRight="8dp"
+            android:textSize="10sp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+
+            <SeekBar
+                android:id="@+id/sbSoundVolume"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="#000"
+                android:textSize="10sp"/>
+
+            <TextView
+                android:id="@+id/tvSoundVolume"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="0"
+                android:textColor="#000"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSetSoundVolume"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="set"
+            android:layout_marginLeft="8dp"
+            android:textSize="10sp"
+            android:background="@drawable/button_bg"/>
+
+        <Button
+            android:id="@+id/btnReadSoundVolume"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="read"
+            android:textSize="10sp"
+            android:background="@drawable/button_bg"
+            android:layout_marginLeft="8dp"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"
+        android:layout_marginTop="8dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:text="Sound Alarm Mode："
+            android:gravity="center_vertical|right"
+            android:textColor="#000"
+            android:layout_marginRight="8dp"
+            android:textSize="10sp"/>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40sp"
+            android:layout_gravity="center_vertical">
+
+            <Spinner
+                android:id="@+id/spSoundAlarmMode"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/button_normal"
+                android:textSize="10sp">
+
+            </Spinner>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@mipmap/ic_drop_down"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/btnSetSoundAlarmMode"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="set"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/button_bg"
+            android:textSize="10sp"/>
+
+        <Button
+            android:id="@+id/btnReadSoundAlarmMode"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="read"
+            android:background="@drawable/button_bg"
+            android:layout_marginLeft="8dp"
+            android:textSize="10sp"/>
+
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"
+        android:layout_marginTop="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/tvFixedModeOnTimeHint"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:text="Fixed Mode OnTime："
+            android:gravity="center_vertical|right"
+            android:textColor="#000"
+            android:layout_marginRight="8dp"
+            android:textSize="10sp"/>
+
+        <EditText
+            android:id="@+id/etFixedModeOnTime"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:background="@drawable/edit_bg"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:textColor="#000"
+            android:textSize="10sp"
+            android:inputType="number"/>
+
+        <Button
+            android:id="@+id/btnSetFixedModeOnTime"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="set"
+            android:layout_marginLeft="8dp"
+            android:textSize="10sp"
+            android:background="@drawable/button_bg"/>
+
+        <Button
+            android:id="@+id/btnReadFixedModeOnTime"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="read"
+            android:textSize="10sp"
+            android:background="@drawable/button_bg"
+            android:layout_marginLeft="8dp"/>
+
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"
+        android:layout_marginTop="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/tvFixedModeOffTimeHint"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:text="Fixed Mode OffTime："
+            android:gravity="center_vertical|right"
+            android:textColor="#000"
+            android:layout_marginRight="8dp"
+            android:textSize="10sp"/>
+
+        <EditText
+            android:id="@+id/etFixedModeOffTime"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:background="@drawable/edit_bg"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:textColor="#000"
+            android:textSize="10sp"
+            android:inputType="number"/>
+
+        <Button
+            android:id="@+id/btnSetFixedModeOffTime"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="set"
+            android:layout_marginLeft="8dp"
+            android:textSize="10sp"
+            android:background="@drawable/button_bg"/>
+
+        <Button
+            android:id="@+id/btnReadFixedModeOffTime"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="read"
+            android:textSize="10sp"
+            android:background="@drawable/button_bg"
+            android:layout_marginLeft="8dp"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

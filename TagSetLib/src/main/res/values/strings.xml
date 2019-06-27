@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TagSetLib</string>
+    <string name="title_activity_tag_set">TagSetActivity</string>
+</resources>

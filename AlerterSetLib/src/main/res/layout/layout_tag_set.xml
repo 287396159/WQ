@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:background="#FFF">
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="ID："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <EditText
+                android:id="@+id/etID"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_bg"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="#000"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnSetID"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnReadID"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="read"
+                android:background="@drawable/button_bg"
+                android:layout_marginLeft="8dp"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="35dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="Enter Low Power Time："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <EditText
+                android:id="@+id/etEnterLowPowerTime"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_bg"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="#000"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnSetEnterLowPowerTime"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnReadEnterLowPowerTime"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="read"
+                android:background="@drawable/button_bg"
+                android:layout_marginLeft="8dp"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="Low Freq Distance："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <EditText
+                android:id="@+id/etLowFreqDistance"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_bg"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="#000"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnSetLowFreqDistance"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnReadLowFreqDistance"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="read"
+                android:background="@drawable/button_bg"
+                android:layout_marginLeft="8dp"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="Tag Alarm En："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40sp"
+                android:layout_gravity="center_vertical">
+
+                <Spinner
+                    android:id="@+id/spTagAlarmEn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_normal"
+                    android:textSize="10sp">
+
+                </Spinner>
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@mipmap/ic_drop_down"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="8dp"
+                    android:textSize="10sp"/>
+
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/btnSetTagAlarmEn"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnReadTagAlarmEn"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="read"
+                android:background="@drawable/button_bg"
+                android:layout_marginLeft="8dp"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="Pan Id："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <EditText
+                android:id="@+id/etPanId"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_bg"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="#000"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnSetPanId"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnReadPanId"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="read"
+                android:background="@drawable/button_bg"
+                android:layout_marginLeft="8dp"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnResetPanID"
+            android:layout_width="128dp"
+            android:layout_height="40dp"
+            android:text="reset PanId"
+            android:layout_gravity="right"
+            android:textSize="10sp"
+            android:background="@drawable/button_bg"
+            android:layout_marginTop="8dp"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp"/>
+
+
+    </LinearLayout>
+
+</ScrollView>

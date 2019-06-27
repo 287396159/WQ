@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:background="#FFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:background="#FFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="Id："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <EditText
+                android:id="@+id/etId_fork"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_bg"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="#000"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnSetId_fork"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <View
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="8dp"/>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="Tag Alarm En："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40sp"
+                android:layout_gravity="center_vertical">
+
+                <Spinner
+                    android:id="@+id/spTagAlarmEn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_normal"
+                    android:textSize="10sp">
+
+                </Spinner>
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@mipmap/ic_drop_down"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="8dp"
+                    android:textSize="10sp"/>
+
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/btnSetTagAlarmEn"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnReadTagAlarmEn"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="read"
+                android:background="@drawable/button_bg"
+                android:layout_marginLeft="8dp"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="35dp">
+
+            <TextView
+                android:id="@+id/tvTagAlarmRange"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="Tag Alarm Range："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <EditText
+                android:id="@+id/etTagAlarmRange"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_bg"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="#000"
+                android:textSize="10sp"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/btnSetTagAlarmRange"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnReadTagAlarmRange"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="read"
+                android:background="@drawable/button_bg"
+                android:layout_marginLeft="8dp"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="Tag Safe Range："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <EditText
+                android:id="@+id/etTagSafeRange"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_bg"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="#000"
+                android:textSize="10sp"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/btnSetTagSafeRange"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnReadTagSafeRange"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="read"
+                android:background="@drawable/button_bg"
+                android:layout_marginLeft="8dp"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="Tag Safe Range Extend："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <EditText
+                android:id="@+id/etTagSafeRangeExtend"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_bg"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="#000"
+                android:textSize="10sp"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/btnSetTagSafeRangeExtend"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnReadTagSafeRangeExtend"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="read"
+                android:background="@drawable/button_bg"
+                android:layout_marginLeft="8dp"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="ForkLift Alarm En："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40sp"
+                android:layout_gravity="center_vertical">
+
+                <Spinner
+                    android:id="@+id/spForkLiftAlarmEn_fork"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_normal"
+                    android:textSize="10sp">
+
+                </Spinner>
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@mipmap/ic_drop_down"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="8dp"
+                    android:textSize="10sp"/>
+
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/btnSetForkLiftAlarmEn_fork"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnReadForkLiftAlarmEn_fork"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="read"
+                android:background="@drawable/button_bg"
+                android:layout_marginLeft="8dp"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="ForkLift Alarm Range："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <EditText
+                android:id="@+id/etForkLiftAlarmRange_fork"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_bg"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="#000"
+                android:textSize="10sp"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/btnSetForkLiftAlarmRange_fork"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnReadForkLiftAlarmRange_fork"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="read"
+                android:background="@drawable/button_bg"
+                android:layout_marginLeft="8dp"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="Fix Alarm En："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40sp"
+                android:layout_gravity="center_vertical">
+
+                <Spinner
+                    android:id="@+id/spFixAlarmEn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/button_normal"
+                    android:textSize="10sp">
+
+                </Spinner>
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@mipmap/ic_drop_down"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="8dp"
+                    android:textSize="10sp"/>
+
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/btnSetFixAlarmEn"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnReadFixAlarmEn"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="read"
+                android:background="@drawable/button_bg"
+                android:layout_marginLeft="8dp"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="Low Freq Distance："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <EditText
+                android:id="@+id/etLowFreqDistance"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_bg"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="#000"
+                android:textSize="10sp"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/btnSetLowFreqDistance"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnReadLowFreqDistance"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="read"
+                android:background="@drawable/button_bg"
+                android:layout_marginLeft="8dp"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="Pan Id："
+                android:gravity="center_vertical|right"
+                android:textColor="#000"
+                android:layout_marginRight="8dp"
+                android:textSize="10sp"/>
+
+            <EditText
+                android:id="@+id/etPanId_fork"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_bg"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="#000"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnSetPanId_fork"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="set"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/button_bg"
+                android:textSize="10sp"/>
+
+            <Button
+                android:id="@+id/btnReadPanId_fork"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="read"
+                android:background="@drawable/button_bg"
+                android:layout_marginLeft="8dp"
+                android:textSize="10sp"/>
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnResetPanId_fork"
+            android:layout_width="128dp"
+            android:layout_height="40dp"
+            android:text="reset PanId"
+            android:layout_gravity="right"
+            android:textSize="10sp"
+            android:background="@drawable/button_bg"
+            android:layout_marginTop="8dp"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000"
+            android:layout_marginTop="8dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp"/>
+
+
+    </LinearLayout>
+
+</ScrollView>
+
