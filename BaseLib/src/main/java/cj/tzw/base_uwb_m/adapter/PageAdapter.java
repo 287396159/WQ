@@ -51,6 +51,8 @@ public class PageAdapter extends PagerAdapter {
             return ConstantUtil.FORKLIFT_TAB[position];
         }else if(deviceType==2){
             return ConstantUtil.FIX_TAB[position];
+        }else if(deviceType==3){
+            return ConstantUtil.Wireless_Firmware[position];
         }
         return  ConstantUtil.TAB_VALS[position];
     }

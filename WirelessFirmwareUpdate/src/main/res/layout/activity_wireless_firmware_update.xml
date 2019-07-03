@@ -25,7 +25,7 @@
 
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="#FFF">
 
             <LinearLayout
@@ -116,10 +116,10 @@
                         android:layout_height="40dp"
                         android:layout_marginLeft="8dp"
                         android:background="@drawable/button_bg"
+                        android:enabled="false"
                         android:text="Start Update"
                         android:textAllCaps="false"
-                        android:textSize="16sp"
-                        android:enabled="false"/>
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <View
@@ -270,306 +270,27 @@
                     android:layout_marginTop="8dp"
                     android:background="#3F51B5" />
 
-
-
-                <LinearLayout
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tab"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/btnReadStatus"
-                        android:layout_width="128dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="left"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_bg"
-                        android:text="Read Status"
-                        android:textAllCaps="false"
-                        android:textSize="16sp" />
-
-                    <Button
-                        android:id="@+id/btnStopUpdate"
-                        android:layout_width="128dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="right"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/button_bg"
-                        android:text="Stop Update"
-                        android:textAllCaps="false"
-                        android:textSize="16sp" />
+                    android:background="@color/sGreen"
+                    app:tabBackground="@color/sGreen"
+                    app:tabGravity="center"
+                    app:tabMode="scrollable"
+                    app:tabSelectedTextColor="#F00"
+                    app:tabTextAppearance="@style/TabLayoutTextStyle"
+                    app:tabTextColor="#000">
 
 
-                </LinearLayout>
+                </android.support.design.widget.TabLayout>
 
-                <View
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/vp"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#000" />
+                    android:layout_height="100dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="220dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="0dp"
-                        android:gravity="center_vertical"
-                        android:paddingRight="0dp"
-                        android:text="Dongle's Firmware Version："
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tvDFVersion"
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="0dp"
-                        android:text=""
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#000" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
-
-
-                    <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="0dp"
-                        android:gravity="center_vertical"
-                        android:paddingRight="0dp"
-                        android:text="AskToUpdate En："
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tvAskToUpdateEn"
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="0dp"
-                        android:text=""
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#000" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
-
-
-                    <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="0dp"
-                        android:gravity="center_vertical"
-                        android:paddingRight="0dp"
-                        android:text="WaitForUpdate En："
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tvWaitForUpdateEn"
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="0dp"
-                        android:text=""
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#000" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
-
-
-                    <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="0dp"
-                        android:gravity="center_vertical"
-                        android:paddingRight="0dp"
-                        android:text="Firmware Type："
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tvFirmwareType"
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="0dp"
-                        android:text=""
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#000" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
-
-
-                    <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="0dp"
-                        android:gravity="center_vertical"
-                        android:paddingRight="0dp"
-                        android:text="Firmware Version："
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tvFirmwareVersion"
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="0dp"
-                        android:text=""
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#000" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
-
-
-                    <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="0dp"
-                        android:gravity="center_vertical"
-                        android:paddingRight="0dp"
-                        android:text="Firmware Size："
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tvFirmwareSize"
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="0dp"
-                        android:text=""
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#000" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
-
-
-                    <TextView
-                        android:layout_width="200dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="0dp"
-                        android:gravity="center_vertical"
-                        android:paddingRight="0dp"
-                        android:text="Need Update Version："
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tvNeedUpdateVersion"
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="0dp"
-                        android:text=""
-                        android:textColor="#000"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-            </LinearLayout>
+                </android.support.v4.view.ViewPager>
 
 
             </LinearLayout>

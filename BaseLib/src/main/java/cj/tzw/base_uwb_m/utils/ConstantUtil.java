@@ -4,6 +4,7 @@ public class ConstantUtil {
     public static String[] TAB_VALS = {"ForkLift Alerter Set","Fix Alerter Set","Alarm Set"};
     public static String[] FORKLIFT_TAB = {"ForkLift Alerter Set","Alarm Set"};
     public static String[] FIX_TAB = {"Fix Alerter Set","Alarm Set"};
+    public static String[] Wireless_Firmware={"Usb Dongle","Update Resoult"};
 
     public static String[] EN_OPTIONS = {"Disable","Enable"};
     public static String[] POWEROF_EN_OPTIONS = {"Disable","Enable","NoSet"};

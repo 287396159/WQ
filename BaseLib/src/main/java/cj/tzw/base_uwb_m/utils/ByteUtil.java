@@ -201,7 +201,7 @@ public class ByteUtil{
         int check = 0;
         if(index >= length) return (byte) check;
         for (int i = index; i < length; i++){
-            Log.e("ByteUtil","check发送的命令包："+(buf[i]&0xff));
+//            Log.e("ByteUtil","check发送的命令包："+(buf[i]&0xff));
             check += (buf[i]&0xff);
         }
         return (byte)check;

@@ -19,10 +19,20 @@ public class FtBaseUtil {
     private static FtReceiveHint monitorReceiveHint;
     private FtOutTimeMonitor ftOutTimeMonitor;
     private StringBuffer sb;
+
     private DataCallBack callBack = new DataCallBack() {
         @Override
         public void method(char[] chars) {
-            Log.i(TAG,"接受数据！");
+            String strChar="";
+            for(int j=0;j<chars.length;j++){
+                if((byte)chars[j]<0){
+                    strChar+="|"+(256+(byte)chars[j]);
+                }else{
+                    strChar+="|"+(byte)chars[j];
+                }
+
+            }
+            Log.i(TAG,"接受数据！"+strChar);
             String charStr = ByteUtil.CharToString(chars,chars.length).replaceAll(" ","").toUpperCase();
             Log.i(TAG,"接受数据："+charStr.toLowerCase()+"-"+ftSrCallback+"-"+ftOcCallback+"-"+monitorReceiveHint);
             if(charStr.startsWith("F1")){
@@ -83,11 +93,24 @@ public class FtBaseUtil {
                             Log.i(TAG,"Null数据："+sb+"-"+charStr);
                             sb = new StringBuffer();
                             sb.append(charStr);
+                            if(ftSrCallback!=null){
+                                ftSrCallback.ftRecevied(ByteUtil.toBytes(charStr));
+                            }
+                            if(ftOcCallback!=null){
+                                ftOcCallback.ftRecevied(ByteUtil.toBytes(charStr));
+                            }
+
                         }
                     }else{
                         Log.i(TAG,"Null数据："+sb+"-"+charStr);
                         sb = new StringBuffer();
                         sb.append(charStr);
+                        if(ftSrCallback!=null){
+                            ftSrCallback.ftRecevied(ByteUtil.toBytes(charStr));
+                        }
+                        if(ftOcCallback!=null){
+                            ftOcCallback.ftRecevied(ByteUtil.toBytes(charStr));
+                        }
                     }
                 }
             }
