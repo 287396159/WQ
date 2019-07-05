@@ -163,45 +163,14 @@ public class MainActivity extends AppCompatActivity implements FtOcCallback{// i
                     lvDevice.setAdapter(null);
                 }
                 cancelOperate = false;
-                DialogUtil.showWait(main,DialogUtil.WAIT_DIALOG,"正在搜索，请稍候...");
-                FtHandleUtil ftHandleUtil = new FtHandleUtil(ftBaseUtil,null);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DialogUtil.showWait(main,DialogUtil.WAIT_DIALOG,"正在搜索，请稍候...");
+                    }
+                });
+                FtHandleUtil ftHandleUtil = new FtHandleUtil(ftBaseUtil,new Device());
                 ftHandleUtil.searchAllDevice();
-                /*final String[] items={"Alerter Set","Tag Set"};
-                Log.i(TAG, "onClick: isTagSet111"+isTagSet);
-                new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Please choose")
-                        .setItems(items,new DialogInterface.OnClickListener(){
-                        public void onClick(DialogInterface dialog, int which){
-                            switch (which){
-                                case 0:
-                                    isTagSet=false;
-                                    if(lvDevice.getChildCount()>0){
-                                        deviceList = new ArrayList<>();
-                                        lvDevice.setAdapter(null);
-                                    }
-                                    cancelOperate = false;
-                                    DialogUtil.showWait(main,DialogUtil.WAIT_DIALOG,"正在搜索，请稍候...");
-                                    FtHandleUtil ftHandleUtil = new FtHandleUtil(ftBaseUtil,null);
-                                    ftHandleUtil.searchAllDevice();
-                                    Log.i(TAG,"Device！"+deviceList);
-                                    break;
-                                case 1:
-                                    isTagSet=true;
-                                    if(lvDevice.getChildCount()>0){
-                                        deviceList = new ArrayList<>();
-                                        lvDevice.setAdapter(null);
-                                    }
-                                    cancelOperate = false;
-                                    DialogUtil.showWait(main,DialogUtil.WAIT_DIALOG,"正在搜索，请稍候...");
-                                    FtHandleUtil ftHandleUtil1 = new FtHandleUtil(ftBaseUtil,null);
-                                    ftHandleUtil1.searchCardDevice();
-                                    Log.i(TAG,"Device！"+deviceList);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                }).show();*/
             }
         });
         lvDevice.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -417,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements FtOcCallback{// i
                     }
                     cancelOperate = false;
                     DialogUtil.showWait(main,DialogUtil.WAIT_DIALOG,"正在搜索，请稍候...");
-                    FtHandleUtil ftHandleUtil1 = new FtHandleUtil(ftBaseUtil,null);
+                    FtHandleUtil ftHandleUtil1 = new FtHandleUtil(ftBaseUtil,new Device(3));
                     ftHandleUtil1.searchCardDevice();
                     Log.i(TAG,"Device！"+deviceList);
                 }else{
@@ -428,7 +397,7 @@ public class MainActivity extends AppCompatActivity implements FtOcCallback{// i
                 if(usbAttached&&ftIsOpen){
                     isTagSet=false;
                     Log.i(TAG,"WIRELESS_FIRMWARE_UPDATE:"+ARouter.getInstance().build(RouterPathMethod.WIRELESS_FIRMWARE_UPDATE_PATH).getGroup());
-                    ARouter.getInstance().build(RouterPathMethod.WIRELESS_FIRMWARE_UPDATE_PATH).withParcelable("device",new Device()).navigation();
+                    ARouter.getInstance().build(RouterPathMethod.WIRELESS_FIRMWARE_UPDATE_PATH).withParcelable("device",new Device(4)).navigation();
                 }else{
                     Toast.makeText(this, "请连接！", Toast.LENGTH_SHORT).show();
                 }

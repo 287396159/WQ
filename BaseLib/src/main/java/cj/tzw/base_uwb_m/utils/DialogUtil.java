@@ -66,7 +66,6 @@ public class DialogUtil {
         params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,view.getChildAt(0).getLayoutParams().height,context.getResources().getDisplayMetrics());
         params.gravity = Gravity.CENTER;
         window.setAttributes(params);
-
         adWait.show();
         pb.setVisibility(View.GONE);
         ivWait.setVisibility(View.VISIBLE);

@@ -31,6 +31,7 @@ public class FtAnalysisUtil {
     }
 
     public static HashMap<String,byte[]> analysisDongleData(byte[] dataBytes){
+
         HashMap<String,byte[]> retMap = null;
         Log.i("FtAnalysisUtil", "analysisData: "+ByteUtil.bytesToHexFun3(dataBytes));
         if(isDongleCorrectData(dataBytes)){

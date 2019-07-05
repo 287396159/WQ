@@ -1,65 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFF">
 
-    <TableLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tableLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="1dp">
+
+    <LinearLayout
+        android:id="@+id/titleLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:background="#838383"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <TableRow
+        <TextView
+            android:id="@+id/tvDeviceID"
+            android:layout_width="200dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:layout_margin="1dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:paddingRight="1dp"
+            android:text="Device ID"
+            android:textColor="#000"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvType"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="0dp"
-                android:gravity="left"
-                android:paddingRight="0dp"
-                android:text="Dongle's "
-                android:textColor="#000"
-                android:textSize="16sp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="0dp"
-                android:gravity="left"
-                android:paddingRight="0dp"
-                android:text="Dongle's "
-                android:textColor="#000"
-                android:textSize="16sp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="0dp"
-                android:gravity="left"
-                android:paddingRight="0dp"
-                android:text="Dongle's"
-                android:textColor="#000"
-                android:textSize="16sp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="0dp"
-                android:gravity="left"
-                android:paddingRight="0dp"
+            android:layout_height="36dp"
+            android:layout_marginRight="1dp"
+            android:layout_weight="3"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:paddingRight="0dp"
+            android:text="Type"
+            android:textColor="#000"
+            android:textSize="16sp" />
 
-                android:text="Dongle's"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-        </TableRow>
-
-        <TableRow
+        <TextView
+            android:id="@+id/tvFirmwareVersion"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="36dp"
+            android:layout_marginRight="1dp"
+            android:layout_weight="3"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:paddingRight="0dp"
+            android:text="Firmware Version"
+            android:textColor="#000"
+            android:textSize="16sp" />
 
-        <TableRow
+        <TextView
+            android:id="@+id/tvUpdateStatus"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="36dp"
+            android:layout_marginRight="1dp"
+            android:layout_weight="3"
+            android:background="#FFFFFF"
+            android:gravity="center"
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </TableLayout>
+            android:paddingRight="0dp"
+            android:text="Update Status"
+            android:textColor="#000"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+
+
+
+
 </LinearLayout>
+</ScrollView>

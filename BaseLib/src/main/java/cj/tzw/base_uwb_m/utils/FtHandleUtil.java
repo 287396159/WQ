@@ -23,6 +23,10 @@ public class FtHandleUtil implements FtReceiveHint {
         }
     }
 
+    public Device getDevice(){
+        return this.device;
+    }
+
     public void setDevice(Device device){
         if(device!=null){
             this.device = device;

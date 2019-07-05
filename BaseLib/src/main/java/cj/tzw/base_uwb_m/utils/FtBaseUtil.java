@@ -23,7 +23,7 @@ public class FtBaseUtil {
     private DataCallBack callBack = new DataCallBack() {
         @Override
         public void method(char[] chars) {
-            String strChar="";
+            /*String strChar="";
             for(int j=0;j<chars.length;j++){
                 if((byte)chars[j]<0){
                     strChar+="|"+(256+(byte)chars[j]);
@@ -32,30 +32,88 @@ public class FtBaseUtil {
                 }
 
             }
-            Log.i(TAG,"接受数据！"+strChar);
+            Log.i(TAG,"接受数据！"+strChar);*/
             String charStr = ByteUtil.CharToString(chars,chars.length).replaceAll(" ","").toUpperCase();
-            Log.i(TAG,"接受数据："+charStr.toLowerCase()+"-"+ftSrCallback+"-"+ftOcCallback+"-"+monitorReceiveHint);
-            if(charStr.startsWith("F1")){
-                if(charStr.endsWith("1F")){
+            if(handlerReceiveHint==null){
+                return;
+            }
+            Log.i(TAG,"接受数据："+charStr.toLowerCase()+"-"+ftSrCallback+"-"+ftOcCallback+"-"+monitorReceiveHint+"handlerReceiveHint"+((FtHandleUtil)handlerReceiveHint).getDevice().getType());
+            if(((FtHandleUtil)handlerReceiveHint).getDevice().getType()!=4){
+                if(charStr.startsWith("F1")){
+                    if(charStr.endsWith("1F")){
+                        if(ftSrCallback!=null){
+                            ftSrCallback.ftRecevied(ByteUtil.toBytes(charStr));
+                            if(handlerReceiveHint !=null){
+                                handlerReceiveHint.ftReceivedHint();
+                            }
+                        }
+                        if(ftOcCallback!=null){
+                            ftOcCallback.ftRecevied(ByteUtil.toBytes(charStr));
+                        }
+                        if(monitorReceiveHint !=null){
+                            monitorReceiveHint.ftReceivedHint();
+                        }
+                    }else{
+                        sb = new StringBuffer();
+                        sb.append(charStr);
+                    }
+                }else if(charStr.endsWith("1F")){
+                    sb.append(charStr);
                     if(ftSrCallback!=null){
-                        ftSrCallback.ftRecevied(ByteUtil.toBytes(charStr));
+                        ftSrCallback.ftRecevied(ByteUtil.toBytes(sb.toString()));
                         if(handlerReceiveHint !=null){
                             handlerReceiveHint.ftReceivedHint();
                         }
                     }
                     if(ftOcCallback!=null){
-                        ftOcCallback.ftRecevied(ByteUtil.toBytes(charStr));
+                        ftOcCallback.ftRecevied(ByteUtil.toBytes(sb.toString()));
                     }
                     if(monitorReceiveHint !=null){
                         monitorReceiveHint.ftReceivedHint();
                     }
                 }else{
-                    sb = new StringBuffer();
-                    sb.append(charStr);
+                    if(charStr.startsWith("D1")){
+                        if(charStr.endsWith("1D")){
+                            if(ftSrCallback!=null){
+                                ftSrCallback.ftRecevied(ByteUtil.toBytes(charStr));
+                                if(handlerReceiveHint !=null){
+                                    handlerReceiveHint.ftReceivedHint();
+                                }
+                            }
+                            if(ftOcCallback!=null){
+                                ftOcCallback.ftRecevied(ByteUtil.toBytes(charStr));
+                            }
+                            if(monitorReceiveHint !=null){
+                                monitorReceiveHint.ftReceivedHint();
+                            }
+                        }else if(charStr.endsWith("1D")){
+                            sb.append(charStr);
+                            if(ftSrCallback!=null){
+                                ftSrCallback.ftRecevied(ByteUtil.toBytes(sb.toString()));
+                                if(handlerReceiveHint !=null){
+                                    handlerReceiveHint.ftReceivedHint();
+                                }
+                            }
+                            if(ftOcCallback!=null){
+                                ftOcCallback.ftRecevied(ByteUtil.toBytes(sb.toString()));
+                            }
+                            if(monitorReceiveHint !=null){
+                                monitorReceiveHint.ftReceivedHint();
+                            }
+                        }
+                        else{
+                            sb = new StringBuffer();
+                            sb.append(charStr);
+                        }
+                    }else{
+                        Log.i(TAG,"Null数据："+sb+"-"+charStr);
+                        sb = new StringBuffer();
+                        sb.append(charStr);
+                    }
                 }
             }else{
-                if(charStr.startsWith("D1")){
-                    if(charStr.endsWith("1D")){
+                if(charStr.startsWith("E9")){
+                    if(charStr.endsWith("9E")){
                         if(ftSrCallback!=null){
                             ftSrCallback.ftRecevied(ByteUtil.toBytes(charStr));
                             if(handlerReceiveHint !=null){
@@ -70,38 +128,6 @@ public class FtBaseUtil {
                             monitorReceiveHint.ftReceivedHint();
                         }
                     }else{
-                        sb = new StringBuffer();
-                        sb.append(charStr);
-                    }
-                }else{
-                    if(charStr.startsWith("E9")){
-                        if(charStr.endsWith("9E")){
-                            if(ftSrCallback!=null){
-                                ftSrCallback.ftRecevied(ByteUtil.toBytes(charStr));
-                                if(handlerReceiveHint !=null){
-                                    handlerReceiveHint.ftReceivedHint();
-                                }
-
-                            }
-                            if(ftOcCallback!=null){
-                                ftOcCallback.ftRecevied(ByteUtil.toBytes(charStr));
-                            }
-                            if(monitorReceiveHint !=null){
-                                monitorReceiveHint.ftReceivedHint();
-                            }
-                        }else{
-                            Log.i(TAG,"Null数据："+sb+"-"+charStr);
-                            sb = new StringBuffer();
-                            sb.append(charStr);
-                            if(ftSrCallback!=null){
-                                ftSrCallback.ftRecevied(ByteUtil.toBytes(charStr));
-                            }
-                            if(ftOcCallback!=null){
-                                ftOcCallback.ftRecevied(ByteUtil.toBytes(charStr));
-                            }
-
-                        }
-                    }else{
                         Log.i(TAG,"Null数据："+sb+"-"+charStr);
                         sb = new StringBuffer();
                         sb.append(charStr);
@@ -112,8 +138,19 @@ public class FtBaseUtil {
                             ftOcCallback.ftRecevied(ByteUtil.toBytes(charStr));
                         }
                     }
+                }else{
+                    Log.i(TAG,"Null数据："+sb+"-"+charStr);
+                    sb = new StringBuffer();
+                    sb.append(charStr);
+                    if(ftSrCallback!=null){
+                        ftSrCallback.ftRecevied(ByteUtil.toBytes(charStr));
+                    }
+                    if(ftOcCallback!=null){
+                        ftOcCallback.ftRecevied(ByteUtil.toBytes(charStr));
+                    }
                 }
             }
+
         }
     };
 
@@ -186,8 +223,6 @@ public class FtBaseUtil {
                 ftOcCallback.ftClosed();
             }
         }
-//        ftLib = null;
-//        ftBaseUtil = null;
         ftOcCallback = null;
         ftSrCallback = null;
         handlerReceiveHint = null;

@@ -5,22 +5,26 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.AppCompatCheckBox;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,9 +39,12 @@ import cj.tzw.base_uwb_m.utils.DialogUtil;
 import cj.tzw.base_uwb_m.utils.FtAnalysisUtil;
 import cj.tzw.base_uwb_m.utils.FtBaseUtil;
 import cj.tzw.base_uwb_m.utils.FtHandleUtil;
+import cj.tzw.wireless_uwb_m.activity.utils.CJTableRow;
 import cj.tzw.wireless_uwb_m.activity.utils.ConvertStatus;
+import cj.tzw.wireless_uwb_m.activity.utils.DevicesUpdateConf;
 import cj.tzw.wireless_uwb_m.activity.utils.HexToBin;
 import cj.tzw.wireless_uwb_m.activity.utils.ImageMarkConf;
+import cj.tzw.wireless_uwb_m.activity.utils.UpdateStatus;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -54,17 +61,24 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
     private WirelessFirmwareUpdateActivity WFActivity=this;
     private Button btnOpenFile,btnStartUpdate,btnReadStatus,btnStopUpdate;
     private EditText etFilePath,etUpdateVersion;
-    private TextView tvFType,tvFVersion,tvFSize,tvDFVersion,tvAskToUpdateEn,tvWaitForUpdateEn,tvFirmwareType,tvFirmwareVersion,tvFirmwareSize,tvNeedUpdateVersion;
+    private TextView tvFType,tvFVersion,tvFSize,tvDFVersion,tvAskToUpdateEn,tvWaitForUpdateEn,tvFirmwareType,tvFirmwareVersion,tvFirmwareSize,tvNeedUpdateVersion,tvTotal,tvSuccess,tvFailure;
     private AppCompatCheckBox cbAskToUpdate;
     private byte clickSelect=0;
     private byte transStatus=0;
     private byte[] sendRequestBuf;
     private Thread threadUpdate=null;
+    private ProgressBar updateProgressBar;
+    private int progressBarLength;
     private LayoutInflater inflater;
     private TabLayout tab;
     private ViewPager vp;
     private ArrayList<View> viewList;
-    private View usbDongleView,resultView;
+    private View usbDongleView,resultView,tableRow;
+
+    private LinearLayout tableLayout;
+    private List<CJTableRow> cJTableRows=new ArrayList<>();
+    private LinearLayout titleLinearLayout;
+    private TextView textView1,textView2,textView3,textView4;
     private void openAssignFolder(String path){
         File file = new File(path);
         if(null==file || !file.exists()){
@@ -246,7 +260,7 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
                                                         tvFType.setText(binType);
                                                         tvFVersion.setText("20" + Integer.toString((byte)(binVersion >> 24),16) + "-" + Integer.toString(((byte)(binVersion >> 16)),16) + "-" + Integer.toString((byte)(binVersion >> 8),16) +
                                                                 " V" + Integer.toString((byte)binVersion,16).substring(0, 1) + "." + Integer.toString((byte)binVersion,16).substring(1, 2));
-                                                        tvFSize.setText(binSize[0]+"KB");
+                                                        tvFSize.setText(binSize[0]/1000.000+"KB");
                                                         btnStartUpdate.setEnabled(true);
                                                     }
                                                 });
@@ -316,12 +330,31 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
         initEvent();
         }
 
+
+    private SpannableStringBuilder getChar(String host,int start,int end,int color){
+        SpannableStringBuilder ssb=new SpannableStringBuilder(host);
+        ssb.setSpan(new ForegroundColorSpan(color),start,end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new AbsoluteSizeSpan(color,false),start,end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ssb;
+
+    }
+
     private void initView(){
         tab=findViewById(R.id.tab);
         vp=findViewById(R.id.vp);
         inflater = LayoutInflater.from(this);
         usbDongleView=inflater.inflate(R.layout.usb_dongle_layout,null);
         resultView=inflater.inflate(R.layout.resoult_layout,null);
+        tableRow=inflater.inflate(R.layout.tablerow_layout,null);
+
+
+        tableLayout=resultView.findViewById(R.id.tableLayout);
+        titleLinearLayout=resultView.findViewById(R.id.titleLinearLayout);
+        textView1=resultView.findViewById(R.id.tvDeviceID);
+        textView2=resultView.findViewById(R.id.tvType);
+        textView3=resultView.findViewById(R.id.tvFirmwareVersion);
+        textView4=resultView.findViewById(R.id.tvUpdateStatus);
+        updateProgressBar=findViewById(R.id.updateProgressBar);
         viewList=new ArrayList();
         viewList.add(usbDongleView);
         viewList.add(resultView);
@@ -352,14 +385,16 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
         ViewGroup.LayoutParams params=vp.getLayoutParams();
         params.height=800;
         vp.setLayoutParams(params);
-        /*params.height=tvDFVersion.getHeight()*10;
-        vp.setLayoutParams(params);*/
         vp.setAdapter(new PageAdapter(viewList,3));
         tab.setupWithViewPager(vp);
 
-        currentDevice = new Device();
+        currentDevice = getIntent().getParcelableExtra("device");
         ftBaseUtil=FtBaseUtil.getInstance(getApplicationContext()).setFtSrCallback(this);
         ftHandleUtil = new FtHandleUtil(ftBaseUtil,currentDevice);
+        tvTotal=findViewById(R.id.tvTotal);
+        tvSuccess=findViewById(R.id.tvSuccess);
+        tvFailure=findViewById(R.id.tvFailure);
+
 
     }
 
@@ -389,23 +424,28 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
             int vId = v.getId();
 
             if(vId==R.id.btnOpenFile){
-                openAssignFolder("/");
                 clickSelect=1;
+                openAssignFolder("/");
             }else if(vId==R.id.btnStartUpdate){
+
                 if("Start Update".equals(btnStartUpdate.getText())){
+                    tvTotal.setText("Total:");
+                    tvSuccess.setText("Success:");
+                    tvFailure.setText("Failure:");
                     isStopRun=false;
+                    for(CJTableRow row:cJTableRows){
+                        tableLayout.removeView(row);
+                    }
                     if("".equals(etUpdateVersion.getText().toString())){
                         needUpdateVersion=0;
-//                        Toast.makeText(WFActivity,"etUpdateVersion"+needUpdateVersion,Toast.LENGTH_LONG).show();
                     }else{
                         needUpdateVersion=Integer.parseInt(etUpdateVersion.getText().toString(),16);
-//                        Toast.makeText(WFActivity,"etUpdateVersiononxxxxxxx"+needUpdateVersion,Toast.LENGTH_LONG).show();
                         etUpdateVersion.setText(String.format("%08d",Integer.parseInt(etUpdateVersion.getText().toString())));
                     }
                     btnStartUpdate.setText("Stop Update");
                     sendRequestBuf=new byte[21];
                     int length=0;
-                    Log.i(TAG, "onClick: binImageMark:"+binImageMark+"  binVersion:"+binVersion+"  binSize:"+binSize[0]+"  binCheckSum:"+binCheckSum+"  needUpdateVersion:"+needUpdateVersion);
+//                    Log.i(TAG, "onClick: binImageMark:"+binImageMark+"  binVersion:"+binVersion+"  binSize:"+binSize[0]+"  binCheckSum:"+binCheckSum+"  needUpdateVersion:"+needUpdateVersion);
                     sendRequestBuf[length++]=(byte)(binImageMark >> 24);
                     sendRequestBuf[length++]=(byte)(binImageMark >> 16);
                     sendRequestBuf[length++]=(byte)(binImageMark >> 8);
@@ -449,11 +489,12 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
                 }
                 clickSelect=2;
             }else if(vId==R.id.btnReadStatus){
-                ftHandleUtil.readDongleStatus();
+                dongleStatusRecevieMsgLength=0;
                 clickSelect=3;
+                ftHandleUtil.readDongleStatus();
             }else if(vId==R.id.btnStopUpdate){
-                ftHandleUtil.stopDongleUpdate();
                 clickSelect=4;
+                ftHandleUtil.stopDongleUpdate();
             }else{
                 clickSelect=0;
             }
@@ -465,12 +506,22 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
     private  static HashMap<String,byte[]> map;
 
     private static boolean isStopRun=false;
+
+    //开始传输
     private void startTransFirmWare(){
         if(transStatus==2){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    btnReadStatus.setEnabled(false);
+                    btnStopUpdate.setEnabled(false);
+                }
+            });
             byte[] sendTransFirmWareBuf=new byte[131];
             int addr=0;
             int txLen=0;
             int dataNum=0;
+            //分包传输
             while (addr<binSize[0]){
                 if(isStopRun){
                     return;
@@ -495,20 +546,22 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
                 }
                 ftHandleUtil.startTransFirmWare(sendTransFirmWareBuf);
                 addr += 128;
+                progressBarLength++;
                 try {
                     Thread.sleep(100);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateProgressBar.setProgress(100*128*progressBarLength/binSize[0]);
+                        }
+                    });
                 }catch (InterruptedException e){
                     Log.e(TAG, "startTransFirmWare: ",e );
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-//                        Toast.makeText(WFActivity,"ZZZZZZZZZZZZZZZZZZZZ",Toast.LENGTH_LONG).show();
-                    }
-                });
             }
         }
     }
+
 
     private void transFirmWareComplete(){
         byte[] sendCompleteBuf = new byte[21];
@@ -543,9 +596,142 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
     }
 
     private String transString="";
+    List<DevicesUpdateConf> deviceUpdateConfList = new ArrayList<DevicesUpdateConf>();
+
+    private byte[] dongleStatusRecevieMsg=new byte[26];
+    private int dongleStatusRecevieMsgLength;
+    private byte[] dongleUpdateStatusRecevieMsg=new byte[15];
+    private int dongleUpdateStatusRecevieMsgLength;
+
+    //接收传输后的消息
     @Override
     public void ftRecevied(byte[] recevieMsg) {
+        if(recevieMsg.length>1&&(recevieMsg[1]==(byte)0x21||recevieMsg[1]==(byte)0x22)){
+            dongleUpdateStatusRecevieMsgLength=recevieMsg.length;
+            for(int i=0;i<recevieMsg.length;i++){
+                dongleUpdateStatusRecevieMsg[i]=recevieMsg[i];
+            }
+        }else if(recevieMsg[recevieMsg.length-1]==(byte)0x9E){
+            if((recevieMsg.length+dongleUpdateStatusRecevieMsgLength)==dongleUpdateStatusRecevieMsg.length){
+                for(int i=0;i<recevieMsg.length;i++){
+                    dongleUpdateStatusRecevieMsg[i+dongleUpdateStatusRecevieMsgLength]=recevieMsg[i];
+                }
+                dongleUpdateStatusRecevieMsgLength++;
+            }
+        }else{
+            for(int i=0;i<recevieMsg.length;i++){
+                if((i+dongleUpdateStatusRecevieMsgLength)<dongleUpdateStatusRecevieMsg.length){
+                    dongleUpdateStatusRecevieMsg[i+dongleUpdateStatusRecevieMsgLength]=recevieMsg[i];
+                    dongleUpdateStatusRecevieMsgLength++;
+                }
+            }
+        }
+        if(dongleUpdateStatusRecevieMsg.length>1&&(dongleUpdateStatusRecevieMsg[1]==(byte)0x21||dongleUpdateStatusRecevieMsg[1]==(byte)0x22)){
+            if(dongleUpdateStatusRecevieMsg.length>=4&&dongleUpdateStatusRecevieMsg[0]==(byte)0xE9&&(dongleUpdateStatusRecevieMsg[1]==(byte)0x21||dongleUpdateStatusRecevieMsg[1]==(byte)0x22)&&dongleUpdateStatusRecevieMsg[dongleUpdateStatusRecevieMsg.length-1]==(byte)0x9E){
+                byte sum=0;
+                for(int i=0;i<dongleUpdateStatusRecevieMsg.length-2;i++){
+                    sum+=dongleUpdateStatusRecevieMsg[i];
+                }
+                if(sum==dongleUpdateStatusRecevieMsg[dongleUpdateStatusRecevieMsg.length-2]){
+
+                    int binImageMarka=dongleUpdateStatusRecevieMsg[5];
+                    int binImageMarkb=dongleUpdateStatusRecevieMsg[6];
+                    int binImageMarkc=dongleUpdateStatusRecevieMsg[7];
+                    int binImageMarkd=dongleUpdateStatusRecevieMsg[8];
+                    if(dongleUpdateStatusRecevieMsg[5]<0){
+                        binImageMarka=256+binImageMarka;
+                    }
+                    if(dongleUpdateStatusRecevieMsg[6]<0){
+                        binImageMarkb=256+binImageMarkb;
+                    }
+                    if(dongleUpdateStatusRecevieMsg[7]<0){
+                        binImageMarkc=256+binImageMarkc;
+                    }
+                    if(dongleUpdateStatusRecevieMsg[8]<0){
+                        binImageMarkd=256+binImageMarkd;
+                    }
+
+                    if(((binImageMarka << 24)+(binImageMarkb << 16)+(binImageMarkc << 8)+binImageMarkd)==binImageMark&&dongleUpdateStatusRecevieMsg.length==15){
+                        //dongle上传设备上报消息
+                        if(dongleUpdateStatusRecevieMsg[1]==(byte)0x21){
+                            boolean isExist=false;
+                            for(DevicesUpdateConf item:deviceUpdateConfList){
+                                if(item.getId()[0]==dongleUpdateStatusRecevieMsg[2]&&item.getId()[1]==dongleUpdateStatusRecevieMsg[3]){
+                                    isExist=true;
+                                    if(item.getVersion()[0]!=dongleUpdateStatusRecevieMsg[9]||item.getVersion()[1]!=dongleUpdateStatusRecevieMsg[10]||item.getVersion()[2]!=dongleUpdateStatusRecevieMsg[11]||item.getVersion()[3]!=dongleUpdateStatusRecevieMsg[12]||item.getUpdateStatus().getUpdateStatus()!=dongleUpdateStatusRecevieMsg[4]){
+                                        item.setVersion(new byte[]{dongleUpdateStatusRecevieMsg[9],dongleUpdateStatusRecevieMsg[10],dongleUpdateStatusRecevieMsg[11],dongleUpdateStatusRecevieMsg[12]});
+                                        item.setUpdateStatus(new UpdateStatus(dongleUpdateStatusRecevieMsg[4]));
+                                    }
+                                    evLvDeviceFlush();
+                                    break;
+                                }
+                            }
+                            if(!isExist){
+                                DevicesUpdateConf devicesUpdateConf=new DevicesUpdateConf();
+                                devicesUpdateConf.setId(new byte[]{dongleUpdateStatusRecevieMsg[2],dongleUpdateStatusRecevieMsg[3]});
+                                devicesUpdateConf.setUpdateStatus(new UpdateStatus(dongleUpdateStatusRecevieMsg[4]));
+                                devicesUpdateConf.setVersion(new byte[]{dongleUpdateStatusRecevieMsg[9],dongleUpdateStatusRecevieMsg[10],dongleUpdateStatusRecevieMsg[11],dongleUpdateStatusRecevieMsg[12]});
+                                devicesUpdateConf.setType(tvFType.getText().toString());
+                                deviceUpdateConfList.add(devicesUpdateConf);
+                                evLvDeviceFlush();
+                            }
+                        }else if(dongleUpdateStatusRecevieMsg[1]==(byte)0x22){
+                            boolean isExist=false;
+                            for(DevicesUpdateConf item:deviceUpdateConfList){
+                                if(item.getId()[0]==dongleUpdateStatusRecevieMsg[2]&&item.getId()[1]==dongleUpdateStatusRecevieMsg[3]){
+                                    isExist=true;
+                                    item.setVersion(new byte[]{dongleUpdateStatusRecevieMsg[9],dongleUpdateStatusRecevieMsg[10],dongleUpdateStatusRecevieMsg[11],dongleUpdateStatusRecevieMsg[12]});
+                                    if(dongleUpdateStatusRecevieMsg[4]==0){
+                                        item.setUpdateStatus(new UpdateStatus(UpdateStatus.updateSuccessful));
+                                    }else {
+                                        item.setUpdateStatus(new UpdateStatus(UpdateStatus.updateFailed));
+                                    }
+                                    evLvDeviceFlush();
+                                    break;
+                                }
+                                if(!isExist){
+                                    DevicesUpdateConf devicesUpdateConf=new DevicesUpdateConf();
+                                    devicesUpdateConf.setId(new byte[]{dongleUpdateStatusRecevieMsg[2],dongleUpdateStatusRecevieMsg[3]});
+                                    if(dongleUpdateStatusRecevieMsg[4]==0){
+                                        item.setUpdateStatus(new UpdateStatus(UpdateStatus.updateSuccessful));
+                                    }else {
+                                        item.setUpdateStatus(new UpdateStatus(UpdateStatus.updateFailed));
+                                    }
+                                    devicesUpdateConf.setVersion(new byte[]{dongleUpdateStatusRecevieMsg[9],dongleUpdateStatusRecevieMsg[10],dongleUpdateStatusRecevieMsg[11],dongleUpdateStatusRecevieMsg[12]});
+                                    devicesUpdateConf.setType(tvFType.getText().toString());
+//                                    deviceUpdateConfList.add(devicesUpdateConf);
+                                    evLvDeviceFlush();
+                                }
+                            }
+                        }
+                        dongleUpdateStatusRecevieMsg=new byte[15];
+                    }
+
+                }
+            }
+        }
         Log.i(TAG, "ftRecevied: "+ ByteUtil.bytesToHexFun3(recevieMsg)+recevieMsg.length+"ThreadName"+Thread.currentThread().getName()+"addr:"+"transStatus"+transStatus+"clickSelect"+clickSelect );
+        if(transStatus==3&&recevieMsg.length==5&&recevieMsg[0]==(byte)0xE9&&recevieMsg[1]==(byte)0x03&&recevieMsg[recevieMsg.length-1]==(byte)0x9E){
+            byte sum=0;
+            for(int i=0;i<recevieMsg.length-2;i++){
+                sum+=(recevieMsg[i]&0xff);
+            }
+            if(sum==recevieMsg[recevieMsg.length-2]){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBarLength=0;
+                        updateProgressBar.setProgress(0);
+                        btnReadStatus.setEnabled(true);
+                        btnStopUpdate.setEnabled(true);
+                        DialogUtil.showWait(WFActivity,DialogUtil.OK_DIALOG,"传输完成！");
+                        btnStartUpdate.setText("Start Update");
+                        transStatus=4;
+
+                    }
+                });
+            }
+        }
         if(transStatus==2){
             transString+=ByteUtil.bytesToHexFun3(recevieMsg);
             boolean isComplete=true;
@@ -560,50 +746,132 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
                 if(recevieMsg.length == 5 && recevieMsg[0] == (byte)0xE9 && recevieMsg[1] == (byte)0x01&&recevieMsg[2]==(byte)0x00&&recevieMsg[3]==(byte)0xEA && recevieMsg[recevieMsg.length - 1] == (byte)0x9E) {
                     transString="";
                     startTransFirmWare();
+                }else if(recevieMsg.length == 5 && recevieMsg[0] == (byte)0xE9 && recevieMsg[1] == (byte)0x01&& recevieMsg[recevieMsg.length - 1] == (byte)0x9E){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            btnReadStatus.setEnabled(true);
+                            btnStopUpdate.setEnabled(true);
+                            btnStartUpdate.setText("Start Update");
+                        }
+                    });
+
+                    switch (recevieMsg[2]){
+                        case 1:
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    DialogUtil.showWait(WFActivity,DialogUtil.ERROR_DIALOG,"Version same");
+
+                                }
+                            });
+                            break;
+                        case 2:
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    DialogUtil.showWait(WFActivity,DialogUtil.ERROR_DIALOG,"Firmware too large");
+                                }
+                            });
+                            break;
+                        case 3:
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    DialogUtil.showWait(WFActivity,DialogUtil.ERROR_DIALOG,"No enable updates");
+                                }
+                            });
+                            break;
+                        case 4:
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    DialogUtil.showWait(WFActivity,DialogUtil.ERROR_DIALOG,"NeedUpdateVersion can not be the same as Firmware Version");
+                                }
+                            });
+                            break;
+                            default:
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        DialogUtil.showWait(WFActivity,DialogUtil.ERROR_DIALOG,"Unknown error");
+                                    }
+                                });
+                                break;
+                    }
                 }
             }
             }else if (clickSelect == 3) {
-                this.map = FtAnalysisUtil.analysisDongleData(recevieMsg);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvDFVersion.setText(ByteUtil.bytesToHexFun3(map.get("dongle_firmware_version")));
-                        int askToUpdateEn = ByteUtil.getShort(map.get("askToUpdate_en"));
-                        if (askToUpdateEn == 0) {
-                            tvAskToUpdateEn.setText("Disable");
-                        } else if (askToUpdateEn == 85) {
-                            tvAskToUpdateEn.setText("Enable");
-                        }
-                        int waitForUpdateEn = ByteUtil.getShort(map.get("waitForUpdate_en"));
-                        if (waitForUpdateEn == 0) {
-                            tvWaitForUpdateEn.setText("Disable");
-                        } else if (waitForUpdateEn == 85) {
-                            tvWaitForUpdateEn.setText("Enable");
-                        }
-                        String firmwareTypeStr = ByteUtil.bytesToHexFun3(map.get("firmware_type"));
-                        int imageMarkInt = Integer.parseInt(firmwareTypeStr, 16);
-                        for (int i = 0; i < deviceImageMarkConf.length; i++) {
-                            if (imageMarkInt == deviceImageMarkConf[i].getImageMark()) {
-                                tvFirmwareType.setText(deviceImageMarkConf[i].getType());
-                            }
-                        }
-                        for (int i = 0; i < dongleImageMarkConf.length; i++) {
-                            if (imageMarkInt == dongleImageMarkConf[i].getImageMark()) {
-                                tvFirmwareType.setText(dongleImageMarkConf[i].getType());
-                            }
-                        }
-                        tvFirmwareVersion.setText(ByteUtil.bytesToHexFun3(map.get("firmware_version")));
-                        String firmwareSizeStr = ByteUtil.bytesToHexFun3(map.get("firmware_size"));
-                        tvFirmwareSize.setText(Integer.valueOf(firmwareSizeStr.substring(0, 2), 16) * 4096 + Integer.valueOf(firmwareSizeStr.substring(2, 4), 16) * 256 + Integer.valueOf(firmwareSizeStr.substring(4, 6), 16) + "KB");
-                        if (ByteUtil.bytesToHexFun3(map.get("need_update_version")).equals("00000000")) {
-                            tvNeedUpdateVersion.setText("none");
-                        } else {
-                            tvNeedUpdateVersion.setText(ByteUtil.bytesToHexFun3(map.get("need_update_version")));
+
+                if(recevieMsg.length!=26){
+                if(recevieMsg[0]==(byte)0xE9&&recevieMsg[1]==(byte)0x41){
+                    dongleStatusRecevieMsgLength=recevieMsg.length;
+                    for(int j=0;j<recevieMsg.length;j++){
+                        dongleStatusRecevieMsg[j]=recevieMsg[j];
+                    }
+                }else if(recevieMsg[recevieMsg.length-1]==(byte)0x9E&&((dongleStatusRecevieMsgLength+recevieMsg.length)==dongleStatusRecevieMsg.length)){
+                    for(int j=0;j<recevieMsg.length;j++){
+                        dongleStatusRecevieMsg[dongleStatusRecevieMsgLength+j]=recevieMsg[j];
+                    }
+                }else {
+                    if((dongleStatusRecevieMsgLength+recevieMsg.length)<dongleStatusRecevieMsg.length){
+                        for(int j=0;j<recevieMsg.length;j++){
+                            dongleStatusRecevieMsgLength++;
+                            dongleStatusRecevieMsg[dongleStatusRecevieMsgLength+j]=recevieMsg[j];
                         }
                     }
-                });
+                }
 
-            } else if (clickSelect == 4) {
+            }else{
+                    dongleStatusRecevieMsgLength=recevieMsg.length;
+                    for(int j=0;j<recevieMsg.length;j++){
+                        dongleStatusRecevieMsg[j]=recevieMsg[j];
+                    }
+                }
+                if(dongleStatusRecevieMsg[0]==(byte)0xE9&&dongleStatusRecevieMsg[dongleStatusRecevieMsg.length-1]==(byte)0x9E&&dongleStatusRecevieMsg[1]==(byte)0x41){
+                    this.map = FtAnalysisUtil.analysisDongleData(dongleStatusRecevieMsg);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.i(TAG, "run: map"+map);
+                            Log.i(TAG, "run: "+map.get("dongle_firmware_version").toString());
+                            tvDFVersion.setText(ByteUtil.bytesToHexFun3(map.get("dongle_firmware_version")));
+                            int askToUpdateEn = ByteUtil.getShort(map.get("askToUpdate_en"));
+                            if (askToUpdateEn == 0) {
+                                tvAskToUpdateEn.setText("Disable");
+                            } else if (askToUpdateEn == 85) {
+                                tvAskToUpdateEn.setText("Enable");
+                            }
+                            int waitForUpdateEn = ByteUtil.getShort(map.get("waitForUpdate_en"));
+                            if (waitForUpdateEn == 0) {
+                                tvWaitForUpdateEn.setText("Disable");
+                            } else if (waitForUpdateEn == 85) {
+                                tvWaitForUpdateEn.setText("Enable");
+                            }
+                            String firmwareTypeStr = ByteUtil.bytesToHexFun3(map.get("firmware_type"));
+                            int imageMarkInt = Integer.parseInt(firmwareTypeStr, 16);
+                            for (int i = 0; i < deviceImageMarkConf.length; i++) {
+                                if (imageMarkInt == deviceImageMarkConf[i].getImageMark()) {
+                                    tvFirmwareType.setText(deviceImageMarkConf[i].getType());
+                                }
+                            }
+                            for (int i = 0; i < dongleImageMarkConf.length; i++) {
+                                if (imageMarkInt == dongleImageMarkConf[i].getImageMark()) {
+                                    tvFirmwareType.setText(dongleImageMarkConf[i].getType());
+                                }
+                            }
+                            tvFirmwareVersion.setText(ByteUtil.bytesToHexFun3(map.get("firmware_version")));
+                            String firmwareSizeStr = ByteUtil.bytesToHexFun3(map.get("firmware_size"));
+                            tvFirmwareSize.setText((Integer.valueOf(firmwareSizeStr.substring(0, 2), 16) * 4096 + Integer.valueOf(firmwareSizeStr.substring(2, 4), 16) * 256 + Integer.valueOf(firmwareSizeStr.substring(4, 6), 16))/1000.000 + "KB");
+                            if (ByteUtil.bytesToHexFun3(map.get("need_update_version")).equals("00000000")) {
+                                tvNeedUpdateVersion.setText("none");
+                            } else {
+                                tvNeedUpdateVersion.setText(ByteUtil.bytesToHexFun3(map.get("need_update_version")));
+                            }
+                        }
+                    });
+                }
+        } else if (clickSelect == 4) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -613,13 +881,109 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
             }
     }
 
-    @Override
-    public void ftRecevieOutTime() {
+
+    private void  evLvDeviceFlush(){
+        if(deviceUpdateConfList.size()>0){
+            for(int i=deviceUpdateConfList.size()-1;i>0;i--){
+                for(int j=0;j<i;j++){
+                    DevicesUpdateConf devicesUpdateConf=deviceUpdateConfList.get(j);
+                    DevicesUpdateConf devicesUpdateConf1=deviceUpdateConfList.get(j+1);
+                    byte[] devicesUpdateConfId=devicesUpdateConf.getId();
+                    byte[] devicesUpdateConfId1=devicesUpdateConf1.getId();
+                    int devicesUpdateConfIda=devicesUpdateConfId[0];
+                    int devicesUpdateConfIdb=devicesUpdateConfId[1];
+                    int devicesUpdateConfIda1=devicesUpdateConfId1[0];
+                    int devicesUpdateConfIdb1=devicesUpdateConfId1[1];
+                    if(devicesUpdateConfIda<0){
+                        devicesUpdateConfIda=256+devicesUpdateConfIda;
+                    }
+                    if(devicesUpdateConfIdb<0){
+                        devicesUpdateConfIdb=256+devicesUpdateConfIdb;
+                    }
+                    if(devicesUpdateConfIda1<0){
+                        devicesUpdateConfIda1=256+devicesUpdateConfIda1;
+                    }
+                    if(devicesUpdateConfIdb1<0){
+                        devicesUpdateConfIdb1=256+devicesUpdateConfIdb1;
+                    }
+
+                    if(((devicesUpdateConfIda << 8)+devicesUpdateConfIdb)>((devicesUpdateConfIda1 << 8)+devicesUpdateConfIdb1)){
+                        DevicesUpdateConf devicesUpdateConfTemp=deviceUpdateConfList.get(j);
+                        deviceUpdateConfList.set(j,deviceUpdateConfList.get(j+1));
+                        deviceUpdateConfList.set(j+1,devicesUpdateConfTemp);
+                    }
+                }
+            }
+        }
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                DialogUtil.showWait(WFActivity,DialogUtil.ERROR_DIALOG,"操作超时！");
+                int deviceSuccessNum=0;
+                int deviceFailNum=0;
+                for (DevicesUpdateConf item:deviceUpdateConfList){
+                    CJTableRow cjTableRow=new CJTableRow(WFActivity);
+                    byte[] id=item.getId();
+                    String type=item.getType();
+                    byte[] version=item.getVersion();
+                    String versionString=ByteUtil.bytesToHexFun3(version);
+                    String versionStr="20"+versionString.substring(0,2)+"-"
+                            +versionString.substring(2,4)+"-"+versionString.substring(4,6)+" V"+versionString.substring(6,7)
+                            +"."+versionString.substring(7,8);
+                    String updateStatusString="";
+
+                    switch (item.getUpdateStatus().getUpdateStatus()){
+                        case 0:
+                            updateStatusString="No Update";
+                            break;
+                        case 1:
+                            updateStatusString="Update Successful";
+                            break;
+                        case 2:
+                            updateStatusString="Update Failed";
+                            break;
+                        case 3:
+                            updateStatusString="Update Disable Or No Firmware";
+                            break;
+                        case 4:
+                            updateStatusString="Version Same ";
+                            break;
+                        case 5:
+                            updateStatusString="Illegally Firmware";
+                            break;
+                        case 6:
+                            updateStatusString="Not Same With NeedUpdateVersion";
+                            break;
+                        case 7:
+                            updateStatusString="Firmware Too Large";
+                            break;
+                    }
+                    if(item.getUpdateStatus().getUpdateStatus()==UpdateStatus.updateSuccessful||item.getUpdateStatus().getUpdateStatus()==UpdateStatus.versionSame){
+                        deviceSuccessNum ++;
+                    }else{
+                        deviceFailNum ++;
+                    }
+                    cjTableRow.setCJTableRow(new String[]{ByteUtil.bytesToHexFun3(id),type,versionStr,updateStatusString});
+                    cJTableRows.add(cjTableRow);
+                    tableLayout.addView(cjTableRow);
+
+                }
+                tvTotal.setText("Total:"+deviceUpdateConfList.size());
+                tvSuccess.setText("Success:"+deviceSuccessNum);
+                tvFailure.setText("Failure:"+deviceFailNum);
             }
         });
     }
+
+    @Override
+    public void ftRecevieOutTime() {
+        if(transStatus!=2&&transStatus!=3&&transStatus!=4){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    DialogUtil.showWait(WFActivity,DialogUtil.ERROR_DIALOG,"操作超时！");
+                }
+            });
+        }
+    }
+
 }

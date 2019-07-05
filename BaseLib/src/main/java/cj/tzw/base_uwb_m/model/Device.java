@@ -12,6 +12,10 @@ public class Device implements Parcelable {
     public Device() {
     }
 
+    public Device(int type) {
+        this.type = type;
+    }
+
     public byte[] getAlerterID() {
         return alerterID;
     }

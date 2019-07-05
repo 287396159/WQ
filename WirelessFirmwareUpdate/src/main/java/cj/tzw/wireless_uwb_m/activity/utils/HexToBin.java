@@ -237,8 +237,8 @@ public class HexToBin {
                         /*if(addrStart<0){
                             addrStart=Math.abs(addrStart);
                         }*/
-                        Log.i("11111", "HexFileToBinFile:this.lineStartAddr "+this.lineStartAddr+"*******this.firstAddr"+this.firstAddr);
-                        Log.i("Ip", "HexFileToBinFile: "+addrStart);
+//                        Log.i("11111", "HexFileToBinFile:this.lineStartAddr "+this.lineStartAddr+"*******this.firstAddr"+this.firstAddr);
+//                        Log.i("Ip", "HexFileToBinFile: "+addrStart);
 
                         for (int j=0;j<this.lineLength;j++){
                             binFile[j+addrStart]=this.lineBinData[j];
@@ -247,7 +247,7 @@ public class HexToBin {
                         break;
                     //数据结束
                     case 1:
-                        Log.i("binSizeOKOK", "HexFileToBinFile: "+binSize);
+//                        Log.i("binSizeOKOK", "HexFileToBinFile: "+binSize);
                         return new ConvertStatus(ConvertStatus.CONVERTOK);
                     //扩展段地址记录
                     case 2:
