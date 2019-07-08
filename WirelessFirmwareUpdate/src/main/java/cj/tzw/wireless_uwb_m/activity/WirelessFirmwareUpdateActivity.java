@@ -52,6 +52,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,6 +63,7 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
     private Button btnOpenFile,btnStartUpdate,btnReadStatus,btnStopUpdate;
     private EditText etFilePath,etUpdateVersion;
     private TextView tvFType,tvFVersion,tvFSize,tvDFVersion,tvAskToUpdateEn,tvWaitForUpdateEn,tvFirmwareType,tvFirmwareVersion,tvFirmwareSize,tvNeedUpdateVersion,tvTotal,tvSuccess,tvFailure;
+    private TextView tvPromptStr;
     private AppCompatCheckBox cbAskToUpdate;
     private byte clickSelect=0;
     private byte transStatus=0;
@@ -196,6 +198,13 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
                                             if(res.getStatus()==0){
                                                 index=true;
                                             }
+                                        }else if("bin".equalsIgnoreCase(fileTypeRun)){
+                                            binSize[0]=0;
+                                            for(int i=0;i<buf.length;i++){
+                                                buffer[i]=(byte)buf[i];
+                                                binSize[0]++;
+                                            }
+                                            index = true;
                                         }else{
                                             index=true;
                                             binSize[0]=byteSize;
@@ -395,6 +404,8 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
         tvSuccess=findViewById(R.id.tvSuccess);
         tvFailure=findViewById(R.id.tvFailure);
 
+        tvPromptStr = findViewById(R.id.tvPromptStr);
+
 
     }
 
@@ -417,6 +428,20 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
     public void ftSendFail(String failMsg) {
 
     }
+
+    private View.OnFocusChangeListener focusChangeListener=new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+
+            int id = v.getId();
+            if(id==R.id.etUpdateVersion){
+                tvPromptStr.setText("range：（0-65535,unit:second）");
+            }
+
+        }
+    };
+
+
     private View.OnClickListener clickListener=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -432,6 +457,8 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
                     tvTotal.setText("Total:");
                     tvSuccess.setText("Success:");
                     tvFailure.setText("Failure:");
+//                    progressBarLength=0;
+//                    updateProgressBar.setProgress(0);
                     isStopRun=false;
                     for(CJTableRow row:cJTableRows){
                         tableLayout.removeView(row);
@@ -439,8 +466,18 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
                     if("".equals(etUpdateVersion.getText().toString())){
                         needUpdateVersion=0;
                     }else{
-                        needUpdateVersion=Integer.parseInt(etUpdateVersion.getText().toString(),16);
-                        etUpdateVersion.setText(String.format("%08d",Integer.parseInt(etUpdateVersion.getText().toString())));
+                        try{
+                            needUpdateVersion=Integer.parseInt(etUpdateVersion.getText().toString(),16);
+                            etUpdateVersion.setText(formatStringVersion(etUpdateVersion.getText().toString()));
+                        }catch (NumberFormatException e){
+                            DialogUtil.showWait(WFActivity,DialogUtil.ERROR_DIALOG,"Need Update Version格式错误！");
+
+                            e.printStackTrace();
+                            return;
+                        }
+//                        etUpdateVersion.setText(String.format("%08d",Integer.parseInt(etUpdateVersion.getText().toString())));
+
+
                     }
                     btnStartUpdate.setText("Stop Update");
                     sendRequestBuf=new byte[21];
@@ -505,6 +542,31 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
     };
     private  static HashMap<String,byte[]> map;
 
+    private String formatStringVersion(String str){
+        if(str.length()<8){
+            char[] strChars=new char[8];
+            for(int i=0;i<8-str.length();i++){
+                strChars[i]='0';
+            }
+            boolean isOk=false;
+            for(int i=8-str.length();i<8;i++){
+                char strChar= str.charAt(i-8+str.length());
+                if('a'<=strChar&&strChar<='f'||'A'<=strChar&&strChar<='F'||'0'<=strChar&&strChar<='9'){
+                    strChars[i]=strChar;
+                }else{
+                    isOk=true;
+
+                }
+
+            }
+            Log.i(TAG, "formatStringVersion: "+String.valueOf(strChars));
+            if(!isOk){
+                return String.valueOf(strChars);
+            }
+        }
+        return null;
+    }
+
     private static boolean isStopRun=false;
 
     //开始传输
@@ -515,6 +577,7 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
                 public void run() {
                     btnReadStatus.setEnabled(false);
                     btnStopUpdate.setEnabled(false);
+                    btnOpenFile.setEnabled(false);
                 }
             });
             byte[] sendTransFirmWareBuf=new byte[131];
@@ -524,6 +587,14 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
             //分包传输
             while (addr<binSize[0]){
                 if(isStopRun){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            btnReadStatus.setEnabled(true);
+                            btnStopUpdate.setEnabled(true);
+                            btnOpenFile.setEnabled(true);
+                        }
+                    });
                     return;
                 }
                 if(binSize[0]-addr>128){
@@ -686,7 +757,7 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
                                     }else {
                                         item.setUpdateStatus(new UpdateStatus(UpdateStatus.updateFailed));
                                     }
-                                    evLvDeviceFlush();
+//                                    evLvDeviceFlush();
                                     break;
                                 }
                                 if(!isExist){
@@ -700,7 +771,7 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
                                     devicesUpdateConf.setVersion(new byte[]{dongleUpdateStatusRecevieMsg[9],dongleUpdateStatusRecevieMsg[10],dongleUpdateStatusRecevieMsg[11],dongleUpdateStatusRecevieMsg[12]});
                                     devicesUpdateConf.setType(tvFType.getText().toString());
 //                                    deviceUpdateConfList.add(devicesUpdateConf);
-                                    evLvDeviceFlush();
+//                                    evLvDeviceFlush();
                                 }
                             }
                         }
@@ -724,6 +795,7 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
                         updateProgressBar.setProgress(0);
                         btnReadStatus.setEnabled(true);
                         btnStopUpdate.setEnabled(true);
+                        btnOpenFile.setEnabled(true);
                         DialogUtil.showWait(WFActivity,DialogUtil.OK_DIALOG,"传输完成！");
                         btnStartUpdate.setText("Start Update");
                         transStatus=4;
@@ -752,6 +824,7 @@ public class WirelessFirmwareUpdateActivity  extends AppCompatActivity implement
                         public void run() {
                             btnReadStatus.setEnabled(true);
                             btnStopUpdate.setEnabled(true);
+                            btnOpenFile.setEnabled(true);
                             btnStartUpdate.setText("Start Update");
                         }
                     });
